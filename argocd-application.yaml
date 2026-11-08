@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-gitops-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jonasebidkoding/k8s.git # Replace with your GitHub repository URL
+    targetRevision: HEAD
+    path: k8s-chart # Path to your Helm chart inside the repo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true     # Automatically delete resources if removed from GitHub
+      selfHeal: true  # Automatically fix any manual drift in the cluster
